@@ -1,0 +1,27 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfprojabell"
+		},
+		"LS_SQL_SERVER_LINK_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"value": "https://adfstorageneeded.dfs.core.windows.net/"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_server": {
+			"value": "adfaibell.database.windows.net"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_database": {
+			"value": "adfdb"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_userName": {
+			"value": "adminaibell"
+		},
+		"TR_Storage_Event_One_properties_typeProperties_scope": {
+			"value": "/subscriptions/9b342a6c-2d15-4e19-99cf-54668e501612/resourceGroups/adfproj/providers/Microsoft.Storage/storageAccounts/adfstorageneeded"
+		}
+	}
+}

@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfprojabell"
+		},
+		"LS_SQL_SERVER_LINK_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'LS_SQL_SERVER_LINK'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adfstorageneeded.dfs.core.windows.net/"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "adfaibell.database.windows.net"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "adfdb"
+		},
+		"LS_SQL_SERVER_LINK_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "adminaibell"
+		},
+		"TR_Storage_Event_One_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/9b342a6c-2d15-4e19-99cf-54668e501612/resourceGroups/adfproj/providers/Microsoft.Storage/storageAccounts/adfstorageneeded"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfprojabell_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"LS_SQL_SERVER_LINK_password": {
+						"value": "[parameters('LS_SQL_SERVER_LINK_password')]"
+					},
+					"AzureDataLakeStorage1_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
+					},
+					"LS_SQL_SERVER_LINK_properties_typeProperties_server": {
+						"value": "[parameters('LS_SQL_SERVER_LINK_properties_typeProperties_server')]"
+					},
+					"LS_SQL_SERVER_LINK_properties_typeProperties_database": {
+						"value": "[parameters('LS_SQL_SERVER_LINK_properties_typeProperties_database')]"
+					},
+					"LS_SQL_SERVER_LINK_properties_typeProperties_userName": {
+						"value": "[parameters('LS_SQL_SERVER_LINK_properties_typeProperties_userName')]"
+					},
+					"TR_Storage_Event_One_properties_typeProperties_scope": {
+						"value": "[parameters('TR_Storage_Event_One_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
