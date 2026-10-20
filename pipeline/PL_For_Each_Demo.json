@@ -1,0 +1,149 @@
+{
+	"name": "PL_For_Each_Demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "All Tables",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "List of Table Names",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('List of Table Names').output.value",
+						"type": "Expression"
+					},
+					"isSequential": false,
+					"activities": [
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"policy": {
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "ADFPIPELINE_01",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"Table_Name": {
+										"value": "@item().Table_Name",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Success_Activity",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "Execute Pipeline1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Execute",
+								"value": {
+									"value": "@{item().Table_Name} - Success",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Failure_Activity",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "Execute Pipeline1",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Execute",
+								"value": {
+									"value": "@{item().Table_Name} - Failure",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "List of Table Names",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "Select Table_Name from metadata.table_list",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DATASET_SQLDB",
+						"type": "DatasetReference",
+						"parameters": {
+							"Schema": "dbo",
+							"Table_Name": "Customers"
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Fail1",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "All Tables",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": "Shit Failed",
+					"errorCode": "500"
+				}
+			}
+		],
+		"variables": {
+			"Execute": {
+				"type": "Array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-10-20T10:51:30Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

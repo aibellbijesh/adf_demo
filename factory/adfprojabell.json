@@ -1,0 +1,15 @@
+{
+	"name": "adfprojabell",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "edf8b007-9fff-4f98-8f1e-57875bd36167",
+		"tenantId": "f0abaf61-5a89-4dc6-98b9-b60245ba0110"
+	}
+}
